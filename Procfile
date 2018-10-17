@@ -1,1 +1,1 @@
-web: python Bot1.py 8080
+web: python Bot1.py
