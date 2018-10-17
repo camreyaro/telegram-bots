@@ -1,1 +1,1 @@
-web: python Bot1.py 8080
+worker: python Bot1.py 8080
