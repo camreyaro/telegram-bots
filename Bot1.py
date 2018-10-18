@@ -3,6 +3,9 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
                           ConversationHandler)
 
 import logging
+import urllib.request
+from bs4 import BeautifulSoup
+import requests
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -105,6 +108,10 @@ def error(bot, update, error):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
 
+def fotito(bot, update):
+    url = 'https://api.thecatapi.com/v1/images/search?mime_type=jpg,png'
+    r = requests.get(url)
+    bot.sendPhoto(chat_id=update.message.chat_id, photo=r.url, caption = "Kawaii :3")
 
 def main():
     print("holi")
@@ -134,6 +141,8 @@ def main():
     # )
     
     dp.add_handler(CommandHandler('start', start))
+
+    dp.add_handler(CommandHandler('fotito', fotito))
 
     dp.add_handler(MessageHandler(Filters.all, msg))
 
