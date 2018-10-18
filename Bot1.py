@@ -3,8 +3,6 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
                           ConversationHandler)
 
 import logging
-import urllib.request
-from bs4 import BeautifulSoup
 import requests
 
 # Enable logging
