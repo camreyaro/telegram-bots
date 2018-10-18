@@ -106,7 +106,7 @@ def error(bot, update, error):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
 
-def fotito(bot, update):
+def gatito(bot, update):
     url = 'https://api.thecatapi.com/v1/images/search?mime_type=jpg,png'
     r = requests.get(url)
     print(r.json()[0]['url'])
@@ -141,7 +141,7 @@ def main():
     
     dp.add_handler(CommandHandler('start', start))
 
-    dp.add_handler(CommandHandler('fotito', fotito))
+    dp.add_handler(CommandHandler('gatito', gatito))
 
     dp.add_handler(MessageHandler(Filters.all, msg))
 
