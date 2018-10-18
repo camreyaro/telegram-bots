@@ -109,6 +109,7 @@ def error(bot, update, error):
 def fotito(bot, update):
     url = 'https://api.thecatapi.com/v1/images/search?mime_type=jpg,png'
     r = requests.get(url)
+    print(r.url)
     bot.sendPhoto(chat_id=update.message.chat_id, photo=r.url, caption = "Kawaii :3")
 
 def main():
