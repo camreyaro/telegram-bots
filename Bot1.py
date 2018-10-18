@@ -12,6 +12,15 @@ logger = logging.getLogger(__name__)
 
 GENDER, PHOTO, LOCATION, BIO = range(4)
 
+def msg(bot, update):
+    user = update.message.from_user
+    # logger.info("Bio of %s: %s", user.first_name, update.message.text)
+    update.message.reply_text('¿Cómo que ' + update.message.text)
+    # update.message.reply_text('Enjoy this photo :3')
+    # bot.sendPhoto(chat_id=update.message.chat_id, photo='https://www.diariodesevilla.es/resources/images/0001072217.jpg', caption = "El puto amo")
+
+
+    return ConversationHandler.END
 
 def start(bot, update):
     reply_keyboard = [['Boy', 'Girl', 'Other']]
@@ -109,26 +118,26 @@ def main():
     dp = updater.dispatcher
 
     # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
-    conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', start)],
+    # conv_handler = ConversationHandler(
+    #     entry_points=[CommandHandler('start', start)],
 
-        states={
-            GENDER: [RegexHandler('^(Boy|Girl|Other)$', gender)],
+    #     states={
+    #         GENDER: [RegexHandler('^(Boy|Girl|Other)$', gender)],
 
-            PHOTO: [MessageHandler(Filters.photo, photo),
-                    CommandHandler('skip', skip_photo)],
+    #         PHOTO: [MessageHandler(Filters.photo, photo),
+    #                 CommandHandler('skip', skip_photo)],
 
-            LOCATION: [MessageHandler(Filters.location, location),
-                       CommandHandler('skip', skip_location)],
+    #         LOCATION: [MessageHandler(Filters.location, location),
+    #                    CommandHandler('skip', skip_location)],
 
-            BIO: [MessageHandler(Filters.text, bio)]
-        },
+    #         BIO: [MessageHandler(Filters.text, bio)]
+    #     },
 
-        fallbacks=[CommandHandler('cancel', cancel)]
-    )
+    #     fallbacks=[CommandHandler('cancel', cancel)]
+    # )
 
 
-    dp.add_handler(conv_handler)
+    dp.add_handler(MessageHandler(Filters.passport_data, msg))
 
     # log all errors
     dp.add_error_handler(error)
