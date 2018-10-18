@@ -23,13 +23,9 @@ def msg(bot, update):
     return ConversationHandler.END
 
 def start(bot, update):
-    reply_keyboard = [['Boy', 'Girl', 'Other']]
 
     update.message.reply_text(
-        'Hi! My name is Corchuelo. I will send you nice F- :D '
-        'Send /cancel to stop talking to me.\n\n'
-        'Are you a boy or a girl?',
-        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+        'Hi! My name is Corchuelo. I will send you nice F- :D ')
 
     return GENDER
 
@@ -111,6 +107,7 @@ def error(bot, update, error):
 
 
 def main():
+    print("holi")
     # Create the EventHandler and pass it your bot's token.
     updater = Updater("667088250:AAE05-aqg8MWp-YZkWfUO7tezE_Y6R6wdOA")
     
@@ -135,7 +132,8 @@ def main():
 
     #     fallbacks=[CommandHandler('cancel', cancel)]
     # )
-
+    
+    dp.add_handler(CommandHandler('start', start))
 
     dp.add_handler(MessageHandler(Filters.passport_data, msg))
 
