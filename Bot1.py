@@ -15,7 +15,7 @@ GENDER, PHOTO, LOCATION, BIO = range(4)
 def msg(bot, update):
     user = update.message.from_user
     # logger.info("Bio of %s: %s", user.first_name, update.message.text)
-    update.message.reply_text('¿Cómo que ' + update.message.text)
+    update.message.reply_text('¿Cómo que ' + update.message.text + '?')
     # update.message.reply_text('Enjoy this photo :3')
     # bot.sendPhoto(chat_id=update.message.chat_id, photo='https://www.diariodesevilla.es/resources/images/0001072217.jpg', caption = "El puto amo")
 
