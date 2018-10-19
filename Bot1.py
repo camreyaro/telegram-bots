@@ -28,70 +28,6 @@ def start(bot, update):
     update.message.reply_text(
         'Hi! My name is Corchuelo. I will send you nice F- :D ')
 
-    return GENDER
-
-
-def gender(bot, update):
-    user = update.message.from_user
-    logger.info("Gender of %s: %s", user.first_name, update.message.text)
-    update.message.reply_text('I see! Please send me a photo of yourself, '
-                              'so I know what you look like, or send /skip if you don\'t want to.',
-                              reply_markup=ReplyKeyboardRemove())
-
-    return PHOTO
-
-
-def photo(bot, update):
-    user = update.message.from_user
-    photo_file = bot.get_file(update.message.photo[-1].file_id)
-    photo_file.download('user_photo.jpg')
-    logger.info("Photo of %s: %s", user.first_name, 'user_photo.jpg')
-    update.message.reply_text('Gorgeous! Now, send me your location please, '
-                              'or send /skip if you don\'t want to.')
-
-    return LOCATION
-
-
-def skip_photo(bot, update):
-    user = update.message.from_user
-    logger.info("User %s did not send a photo.", user.first_name)
-    update.message.reply_text('I bet you look great! Now, send me your location please, '
-                              'or send /skip.')
-
-    return LOCATION
-
-
-def location(bot, update):
-    user = update.message.from_user
-    user_location = update.message.location
-    logger.info("Location of %s: %f / %f", user.first_name, user_location.latitude,
-                user_location.longitude)
-    update.message.reply_text('Maybe I can visit you sometime! '
-                              'At last, tell me something about yourself.')
-
-    return BIO
-
-
-def skip_location(bot, update):
-    user = update.message.from_user
-    logger.info("User %s did not send a location.", user.first_name)
-    update.message.reply_text('You seem a bit paranoid! '
-                              'At last, tell me something about yourself.')
-
-    return BIO
-
-
-def bio(bot, update):
-    
-    user = update.message.from_user
-    logger.info("Bio of %s: %s", user.first_name, update.message.text)
-    update.message.reply_text('Su jefe no estaría orgulloso.')
-    update.message.reply_text('Enjoy this photo :3')
-    bot.sendPhoto(chat_id=update.message.chat_id, photo='https://www.diariodesevilla.es/resources/images/0001072217.jpg', caption = "El puto amo")
-
-
-    return ConversationHandler.END
-
 
 def cancel(bot, update):
     user = update.message.from_user
@@ -112,6 +48,9 @@ def gatito(bot, update):
     print(r.json()[0]['url'])
     bot.sendPhoto(chat_id=update.message.chat_id, photo=r.json()[0]['url'], caption = "Kawaii :3")
 
+def time(bot, update,job_queue):
+    job = job_queue.run_repeating(gatito, 60, context=update)
+
 def main():
     print("holi")
     # Create the EventHandler and pass it your bot's token.
@@ -120,30 +59,13 @@ def main():
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
 
-    # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
-    # conv_handler = ConversationHandler(
-    #     entry_points=[CommandHandler('start', start)],
-
-    #     states={
-    #         GENDER: [RegexHandler('^(Boy|Girl|Other)$', gender)],
-
-    #         PHOTO: [MessageHandler(Filters.photo, photo),
-    #                 CommandHandler('skip', skip_photo)],
-
-    #         LOCATION: [MessageHandler(Filters.location, location),
-    #                    CommandHandler('skip', skip_location)],
-
-    #         BIO: [MessageHandler(Filters.text, bio)]
-    #     },
-
-    #     fallbacks=[CommandHandler('cancel', cancel)]
-    # )
-    
     dp.add_handler(CommandHandler('start', start))
 
     dp.add_handler(CommandHandler('gatito', gatito))
 
     dp.add_handler(MessageHandler(Filters.all, msg))
+
+    dp.add_handler(MessageHandler(Filters.text , time, pass_job_queue=True))
 
     # log all errors
     dp.add_error_handler(error)
