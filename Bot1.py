@@ -4,6 +4,7 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
 import logging
 import requests
 import schedule
+# import sqlite3
 from time import time, sleep
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -53,9 +54,6 @@ def gatito(bot):
     print(r.json()[0]['url'])
     bot.sendPhoto(chat_id=chat_id, photo=r.json()[0]['url'], caption = "Kawaii :3")
 
-def time(bot, update,job_queue):
-    job = job_queue.run_repeating(gatito, 60, context=update)
-
 def main():
     print("holi")
     
@@ -73,7 +71,7 @@ def main():
 
     scheduler = BackgroundScheduler()
 
-    trigger = CronTrigger(year='*', month='*', day='*', hour='*', minute='30', second='*')
+    trigger = CronTrigger(year='*', month='*', day='*', hour='*', minute='30', second='40')
 
     scheduler.add_job(gatito, trigger=trigger, args=(updater.bot,))
 
