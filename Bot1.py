@@ -73,7 +73,7 @@ def main():
 
     scheduler = BackgroundScheduler()
 
-    trigger = CronTrigger(year='*', month='*', day='*', hour='*', minute='*', second='10')
+    trigger = CronTrigger(year='*', month='*', day='*', hour='*', minute='30', second='*')
 
     scheduler.add_job(gatito, trigger=trigger, args=(updater.bot,))
 
