@@ -52,7 +52,7 @@ def gatito(bot,update):
     url = 'https://api.thecatapi.com/v1/images/search?mime_type=jpg,png'
     r = requests.get(url)
     print(r.json()[0]['url'])
-    bot.sendPhoto(chat_id=chat_id, photo=r.json()[0]['url'], caption = "Kawaii :3")
+    bot.sendPhoto(chat_id=update.chat_id, photo=r.json()[0]['url'], caption = "Kawaii :3")
 
 def gatitoTriggered(bot):
     url = 'https://api.thecatapi.com/v1/images/search?mime_type=jpg,png'
@@ -77,7 +77,7 @@ def main():
 
     scheduler = BackgroundScheduler()
 
-    trigger = CronTrigger(year='*', month='*', day='*', hour='*', minute='58', second='00')
+    trigger = CronTrigger(year='*', month='*', day='*', hour='*', minute='02', second='00')
 
     scheduler.add_job(gatitoTriggered, trigger=trigger, args=(updater.bot,))
 
