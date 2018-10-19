@@ -27,7 +27,9 @@ def msg(bot, update):
     return ConversationHandler.END
 
 def start(bot, update):
-
+    global chat_id;
+    chat_id = update.message.chat_id;
+    print(chat_id)
     update.message.reply_text(
         'Hi! My name is Corchuelo. I will send you nice F- :D ')
 
@@ -45,17 +47,18 @@ def error(bot, update, error):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
 
-def gatito(bot, update):
+def gatito(bot):
     url = 'https://api.thecatapi.com/v1/images/search?mime_type=jpg,png'
     r = requests.get(url)
     print(r.json()[0]['url'])
-    bot.sendPhoto(chat_id=update.message.chat_id, photo=r.json()[0]['url'], caption = "Kawaii :3")
+    bot.sendPhoto(chat_id=chat_id, photo=r.json()[0]['url'], caption = "Kawaii :3")
 
 def time(bot, update,job_queue):
     job = job_queue.run_repeating(gatito, 60, context=update)
 
 def main():
     print("holi")
+    
     # Create the EventHandler and pass it your bot's token.
     updater = Updater("667088250:AAE05-aqg8MWp-YZkWfUO7tezE_Y6R6wdOA")
     
@@ -72,7 +75,7 @@ def main():
 
     trigger = CronTrigger(year='*', month='*', day='*', hour='*', minute='*', second='10')
 
-    scheduler.add_job(gatito, trigger=trigger)
+    scheduler.add_job(gatito, trigger=trigger, args=(updater.bot))
 
     scheduler.start()
 
