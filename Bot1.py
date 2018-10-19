@@ -7,7 +7,6 @@ import schedule
 from time import time, sleep
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
-import utils.periodic_job as periodic_job
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -73,7 +72,7 @@ def main():
 
     trigger = CronTrigger(year='*', month='*', day='*', hour='*', minute='*', second='10')
 
-    scheduler.add_job(periodic_job.send_daily_message, trigger=trigger, args=(updater.bot,))
+    scheduler.add_job(gatito, trigger=trigger, args=(updater.bot,))
 
     scheduler.start()
 
