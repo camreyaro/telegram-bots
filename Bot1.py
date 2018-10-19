@@ -5,6 +5,8 @@ import logging
 import requests
 import schedule
 from time import time, sleep
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -66,11 +68,13 @@ def main():
 
     dp.add_handler(MessageHandler(Filters.all, msg))
 
-    schedule.every(1).minutes.do(gatito)
+    scheduler = BackgroundScheduler()
 
-    while True:
-        schedule.run_pending()
-        sleep(1)
+    trigger = CronTrigger(year='*', month='*', day='*', hour='*', minute='*', second='10')
+
+    scheduler.add_job(periodic_job.send_daily_message, trigger=trigger, args=(updater.bot,))
+
+    scheduler.start()
 
     # log all errors
     dp.add_error_handler(error)
