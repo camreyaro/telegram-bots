@@ -72,7 +72,7 @@ def main():
 
     trigger = CronTrigger(year='*', month='*', day='*', hour='*', minute='*', second='10')
 
-    scheduler.add_job(gatito, trigger=trigger, args=(updater.bot))
+    scheduler.add_job(gatito, trigger=trigger)
 
     scheduler.start()
 
