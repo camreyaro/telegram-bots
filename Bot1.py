@@ -1,9 +1,10 @@
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove)
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler,
                           ConversationHandler)
-
 import logging
 import requests
+import schedule
+from time import time, sleep
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -65,7 +66,9 @@ def main():
 
     dp.add_handler(MessageHandler(Filters.all, msg))
 
-    dp.add_handler(MessageHandler(Filters.text , time, pass_job_queue=True))
+    schedule.every(1).minutes.do(gatito)
+    schedule.run_pending()
+    sleep(1)
 
     # log all errors
     dp.add_error_handler(error)
