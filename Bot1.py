@@ -67,8 +67,10 @@ def main():
     dp.add_handler(MessageHandler(Filters.all, msg))
 
     schedule.every(1).minutes.do(gatito)
-    schedule.run_pending()
-    sleep(1)
+
+    while True:
+        schedule.run_pending()
+        sleep(1)
 
     # log all errors
     dp.add_error_handler(error)
