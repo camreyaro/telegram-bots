@@ -52,7 +52,7 @@ def gatito(bot,update):
     url = 'https://api.thecatapi.com/v1/images/search?mime_type=jpg,png'
     r = requests.get(url)
     print(r.json()[0]['url'])
-    bot.sendPhoto(chat_id=update.chat_id, photo=r.json()[0]['url'], caption = "Kawaii :3")
+    bot.sendPhoto(chat_id=update.message.chat_id, photo=r.json()[0]['url'], caption = "Kawaii :3")
 
 def gatitoTriggered(bot):
     url = 'https://api.thecatapi.com/v1/images/search?mime_type=jpg,png'
