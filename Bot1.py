@@ -60,7 +60,7 @@ def error(bot, update, error):
 def horario(bot,update):
     conn = sqlite3.connect('test.db')
 
-    day = date.today().strftime("%A")
+    # day = date.today().strftime("%A")
 
     output = """<table>
                     <tr>
