@@ -11,13 +11,13 @@ import sqlite3
 from time import time, sleep
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
-from datetime import *
-import locale
+# from datetime import *
+# import locale
 #############################
 #############################
 
 # Set locale to Spain
-locale.setlocale(locale.LC_ALL, 'es_ES')
+# locale.setlocale(locale.LC_ALL, 'es_ES')
 
 
 # Enable logging
