@@ -1,13 +1,24 @@
+############################
+# IMPORTS
+############################
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove)
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler,
                           ConversationHandler)
 import logging
 import requests
 import schedule
-# import sqlite3
+import sqlite3
 from time import time, sleep
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
+from datetime import *
+import locale
+#############################
+#############################
+
+# Set locale to Spain
+locale.setlocale(locale.LC_ALL, 'es_ES')
+
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -15,10 +26,9 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-GENDER, PHOTO, LOCATION, BIO = range(4)
 
 def msg(bot, update):
-    user = update.message.from_user
+    # user = update.message.from_user
     # logger.info("Bio of %s: %s", user.first_name, update.message.text)
     update.message.reply_text('¿Cómo que ' + update.message.text + '?')
     # update.message.reply_text('Enjoy this photo :3')
@@ -43,10 +53,34 @@ def cancel(bot, update):
 
     return ConversationHandler.END
 
-
 def error(bot, update, error):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
+
+def horario(bot,update):
+    conn = sqlite3.connect('test.db')
+
+    day = date.today().strftime("%A")
+
+    output = """<table>
+                    <tr>
+                        <th>ASIGNATURA</th>
+                        <th>DIA</th>
+                        <th>HORA</th>
+                        <th>AULA</th>
+                    </tr>"""
+    # for item in conn.execute("SELECT * FROM HORARIO WHERE DIA = '" + day + "';"):
+    for item in conn.execute("SELECT * FROM HORARIO;"):
+        output += """<td>
+                        <tr>""" + item[0] + """</tr>
+                        <tr>""" + item[1] + """</tr>
+                        <tr>""" + item[2] + """</tr>
+                        <tr>""" + item[3] + """</tr>
+                    </td>"""
+
+    update.message.reply_text("Ahí va tu horario de hoy!")
+    update.message.reply_text(chat_id=update.message.chat_id, text=output, parse_mode=telegram.ParseMode.HTML)
+
 
 def gatito(bot,update):
     url = 'https://api.thecatapi.com/v1/images/search?mime_type=jpg,png'
@@ -72,6 +106,8 @@ def main():
     dp.add_handler(CommandHandler('start', start))
 
     dp.add_handler(CommandHandler('gatito', gatito))
+
+    dp.add_handler(CommandHandler('horario', horario))
 
     dp.add_handler(MessageHandler(Filters.all, msg))
 
